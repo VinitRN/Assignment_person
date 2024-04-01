@@ -1,20 +1,13 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
-public class Person {
-    private String name;
-    private Date dob;
+class Person {
+    protected String name;
+    protected LocalDate dob;
 
-    public Person(String name, String dob) throws ParseException {
+    public Person(String name, LocalDate dob) {
         this.name = name;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        if (dob.contains("-")) {
-            this.dob = dateFormat.parse(dob);
-        } else {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            this.dob = dateFormat.parse(dob);
-        }
+        this.dob = dob;
     }
 
     public void displayName() {
@@ -22,9 +15,8 @@ public class Person {
     }
 
     public void displayAge() {
-        Date currentDate = new Date();
-        long ageInMillis = currentDate.getTime() - dob.getTime();
-        long years = ageInMillis / 1000 / 60 / 60 / 24 / 365;
-        System.out.println("Age: " + years + " years");
+        LocalDate currentDate = LocalDate.now();
+        Period age = Period.between(dob, currentDate);
+        System.out.println("Age: " + age.getYears() + " years");
     }
 }
